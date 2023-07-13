@@ -1,12 +1,13 @@
-// const contactsOperations = require("../../models/contacts");
 const { Contact } = require("../../models/contact");
 const { NotFound } = require("http-errors");
 
-const getById = async (req, res) => {
+const updateStatusContact = async (req, res) => {
   const { contactId } = req.params;
-  const result = await Contact.findById(contactId);
+  const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
   if (!result) {
-    throw new NotFound(`Contact with id=${contactId} not found`);
+    throw new NotFound(404, { message: "missing field favorite" });
   }
   res.json({
     status: "success",
@@ -17,4 +18,4 @@ const getById = async (req, res) => {
   });
 };
 
-module.exports = getById;
+module.exports = updateStatusContact;
