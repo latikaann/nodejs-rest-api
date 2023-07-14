@@ -1,15 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-const { validation, isValidId } = require("../../middlewares");
+const { validation, isValidId, authenticate } = require("../../middlewares");
 const { schemas } = require("../../models/contact");
 const { contacts: controllers } = require("../../controllers");
 
-router.get("/", controllers.getAll);
+router.get("/", authenticate, controllers.getAll);
 
 router.get("/:contactId", isValidId, controllers.getById);
 
-router.post("/", validation(schemas.joiSchema), controllers.addNewContact);
+router.post(
+  "/",
+  authenticate,
+  validation(schemas.joiSchema),
+  controllers.addNewContact
+);
 
 router.delete("/:contactId", isValidId, controllers.removeById);
 
