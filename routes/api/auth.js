@@ -13,4 +13,11 @@ router.get("/current", authenticate, ctrl.getCurrent);
 
 router.get("/logout", authenticate, ctrl.logout);
 
+router.patch(
+  "/subscription",
+  authenticate,
+  validation(schemas.joiSubscriptionSchema),
+  ctrl.updateSubscriptionUser
+);
+
 module.exports = router;
