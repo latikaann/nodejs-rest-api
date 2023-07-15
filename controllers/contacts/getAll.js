@@ -1,5 +1,3 @@
-// const contactsOperations = require("../../models/contacts");
-
 const { Contact } = require("../../models/contact");
 
 const getAll = async (req, res) => {
@@ -7,11 +5,21 @@ const getAll = async (req, res) => {
 
   const { page = 1, limit = 20 } = req.query;
   const skip = (page - 1) * limit;
+  const favorite = req.query.favorite;
 
-  const contacts = await Contact.find({ owner: _id }, "", {
-    skip,
-    limit: Number(limit),
-  }).populate("owner", "_id name email");
+  let contacts = "";
+
+  if (favorite) {
+    contacts = await Contact.find({ owner: _id, favorite }, "", {
+      skip,
+      limit: Number(limit),
+    }).populate("owner", "_id name email");
+  } else {
+    contacts = await Contact.find({ owner: _id }, "", {
+      skip,
+      limit: Number(limit),
+    }).populate("owner", "_id name email");
+  }
 
   res.json({
     status: "success",
@@ -23,5 +31,3 @@ const getAll = async (req, res) => {
 };
 
 module.exports = getAll;
-
-// GET /contacts?page=1&limit=20
