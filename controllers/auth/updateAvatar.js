@@ -1,6 +1,4 @@
-const fs = require("fs/promises");
 const path = require("path");
-const { Unauthorized } = require("http-errors");
 const Jimp = require("jimp");
 
 const { User } = require("../../models");
@@ -26,9 +24,6 @@ const updateAvatar = async (req, res) => {
     code: 200,
     avatarURL,
   });
-
-  // await fs.unlink(req.file.path);
-  // throw new Unauthorized("Not authorized");
 };
 
 module.exports = updateAvatar;
