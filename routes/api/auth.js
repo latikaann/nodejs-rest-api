@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { validation, authenticate } = require("../../middlewares");
+const { validation, authenticate, upload } = require("../../middlewares");
 const { auth: ctrl } = require("../../controllers");
 const { schemas } = require("../../models/user");
 
@@ -12,6 +12,13 @@ router.post("/login", validation(schemas.joiLoginSchema), ctrl.login);
 router.get("/current", authenticate, ctrl.getCurrent);
 
 router.get("/logout", authenticate, ctrl.logout);
+
+router.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  ctrl.updateAvatar
+);
 
 router.patch(
   "/subscription",
