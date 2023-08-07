@@ -5,7 +5,9 @@ const ctrlWrapper = (ctrl) => {
     try {
       await ctrl(req, res, next);
     } catch (error) {
-      await fs.unlink(req.file.path);
+      if (req.file && req.file.path) {
+        await fs.unlink(req.file.path);
+      }
       next(error);
     }
   };
